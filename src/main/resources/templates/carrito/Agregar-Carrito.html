@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{reutilizables/master.html}"> 
+<head>
+<meta charset="utf-8">
+<title>Agregando al Carrito</title>
+</head>
+<body>
+	<div layout:fragment="content">
+	
+	<div th:if="${msgExcesoCantidad!=null}" class="alert alert-warning alert-dismissible">
+			[[${msgExcesoCantidad}]]
+			<button type="button" class="btn btn-close" data-bs-dismiss="alert"></button>	
+		</div>
+	
+		<div th:object="${producto}">
+			
+			<div class="mb-3">
+				<label for="nombre" class="form-label">Nombre:</label>
+				<input type="text" id="nombre"class="form-control" th:field="*{nombre}" readonly>
+			</div>
+			
+			<div class="mb-3">
+				<label for="categoria" class="form-label">Categoria: </label>
+				<select id="idCategoria" th:field="*{idCategoria}" class="form-control" disabled="disabled">
+					<option th:each="cate: ${listadoCategorias}"
+					th:value="${cate.idCategoria}" th:text="${cate.nombreCategoria}"></option>
+				</select>
+			</div>
+			
+			<div class="mb-3">
+				<label for="precio" class="form-label">Precio:</label>
+				<input type="text" id="precio"  class="form-control" th:field="*{precio}" readonly>
+			</div>
+			
+			<div class="mb-3">
+				<label for="stock" class="form-label">Stock: </label>
+				<input type="text" id="stock"  class="form-control" th:field="*{stock}" readonly>
+			</div>
+			
+			<form th:action="@{/compras/agregar/carrito}" method="post">
+				<input type="hidden" th:field="*{idProducto}">
+				
+				<div class="mb-3">
+					<label for="cantidad" class="form-label">Cantidad: </label>
+					<input type="number" min="1" value ="1" id="cantidad" name="cantidad" class="form-control">
+				</div>
+				
+				<div class="text-end">
+					<button type="submit" class="btn btn-success"><i class="fas fa-cart-plus"></i>&nbsp;Agregar al Carrito</button>
+					<a href="/compras/productos/filtro" class="btn btn-secondary"><i class="fas fa-backward"></i>&nbsp;Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
